@@ -1,15 +1,11 @@
 name: Deploy on Production
 
 on:
-  push:
-    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
   deploy_on_production:
-
     runs-on: ubuntu-latest
-
 
     steps:
       - name: Checkout Source Code
@@ -58,7 +54,7 @@ jobs:
           echo CLOUDINARY_CLIENT_API=${{ secrets.CLOUDINARY_CLIENT_API }} >> .env
           echo CLOUDINARY_CLIENT_SECRET=${{ secrets.CLOUDINARY_CLIENT_SECRET }} >> .env
           echo PORT=4001 >> .env
-          cat .env 
+          cat .env
 
       - name: Create Users Env file
         working-directory: ./user
@@ -74,11 +70,11 @@ jobs:
           echo CLOUDINARY_CLIENT_SECRET=${{ secrets.CLOUDINARY_CLIENT_SECRET }} >> .env
           echo PORT=4002 >> .env
           cat .env
-          
+
       - name: Generate deployment package
         run: |
           zip -r deploy.zip . -x '*.git'
-      
+
       - name: Deploy on Elastic beanstalk Production Env
         uses: einaregilsson/beanstalk-deploy@v20
         with:
@@ -91,5 +87,4 @@ jobs:
           deployment_package: deploy.zip
 
     env:
-          DEBUG: true
-        
+      DEBUG: true
