@@ -5,19 +5,24 @@ on:
 
 jobs:
   deploy_on_production:
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest]
 
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v2
 
-      - name: Create Applications Env file
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Application microservice
+      - name: Create Env file for Application microservice
         working-directory: ./application
         run: |
           touch .env
           echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} >> .env
           echo MONGO_URI=${{ secrets.MONGO_URI }} >> .env
-          echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} >> .env
           echo JWT_EXPIRES=${{ secrets.JWT_EXPIRES }} >> .env
           echo COOKIE_EXPIRE=${{ secrets.COOKIE_EXPIRE }} >> .env
           echo CLOUDINARY_CLIENT_NAME=${{ secrets.CLOUDINARY_CLIENT_NAME }} >> .env
@@ -26,13 +31,34 @@ jobs:
           echo PORT=4003 >> .env
           cat .env
 
-      - name: Create Blogs Env file
+      - name: Install Dependencies in Application microservice
+        working-directory: ./application
+        run: |
+          npm install
+
+      - name: Generate deployment package for Application microservice
+        working-directory: ./application
+        run: |
+          zip -r application.zip .
+
+      - name: Deploy Application microservice on Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: ctse-app
+          environment_name: application-env
+          version_label: "ver-${{ github.sha }}"
+          region: us-north-1
+          deployment_package: ./application/application.zip
+
+      # Blogs microservice
+      - name: Create Env file for Blogs microservice
         working-directory: ./blog
         run: |
           touch .env
           echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} >> .env
           echo MONGO_URI=${{ secrets.MONGO_URI }} >> .env
-          echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} >> .env
           echo JWT_EXPIRES=${{ secrets.JWT_EXPIRES }} >> .env
           echo COOKIE_EXPIRE=${{ secrets.COOKIE_EXPIRE }} >> .env
           echo CLOUDINARY_CLIENT_NAME=${{ secrets.CLOUDINARY_CLIENT_NAME }} >> .env
@@ -41,13 +67,34 @@ jobs:
           echo PORT=4004 >> .env
           cat .env
 
-      - name: Create Jobs Env file
+      - name: Install Dependencies in Blogs microservice
+        working-directory: ./blog
+        run: |
+          npm install
+
+      - name: Generate deployment package for Blogs microservice
+        working-directory: ./blog
+        run: |
+          zip -r blog.zip .
+
+      - name: Deploy Blogs microservice on Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: ctse-app
+          environment_name: blog-env
+          version_label: "ver-${{ github.sha }}"
+          region: us-north-1
+          deployment_package: ./blog/blog.zip
+
+      # Jobs microservice
+      - name: Create Env file for Jobs microservice
         working-directory: ./job
         run: |
           touch .env
           echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} >> .env
           echo MONGO_URI=${{ secrets.MONGO_URI }} >> .env
-          echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} >> .env
           echo JWT_EXPIRES=${{ secrets.JWT_EXPIRES }} >> .env
           echo COOKIE_EXPIRE=${{ secrets.COOKIE_EXPIRE }} >> .env
           echo CLOUDINARY_CLIENT_NAME=${{ secrets.CLOUDINARY_CLIENT_NAME }} >> .env
@@ -56,13 +103,34 @@ jobs:
           echo PORT=4001 >> .env
           cat .env
 
-      - name: Create Users Env file
+      - name: Install Dependencies in Jobs microservice
+        working-directory: ./job
+        run: |
+          npm install
+
+      - name: Generate deployment package for Jobs microservice
+        working-directory: ./job
+        run: |
+          zip -r job.zip .
+
+      - name: Deploy Jobs microservice on Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: ctse-app
+          environment_name: job-env
+          version_label: "ver-${{ github.sha }}"
+          region: us-north-1
+          deployment_package: ./job/job.zip
+
+      # User microservice
+      - name: Create Env file for User microservice
         working-directory: ./user
         run: |
           touch .env
           echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} >> .env
           echo MONGO_URI=${{ secrets.MONGO_URI }} >> .env
-          echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} >> .env
           echo JWT_EXPIRES=${{ secrets.JWT_EXPIRES }} >> .env
           echo COOKIE_EXPIRE=${{ secrets.COOKIE_EXPIRE }} >> .env
           echo CLOUDINARY_CLIENT_NAME=${{ secrets.CLOUDINARY_CLIENT_NAME }} >> .env
@@ -71,20 +139,26 @@ jobs:
           echo PORT=4002 >> .env
           cat .env
 
-      - name: Generate deployment package
+      - name: Install Dependencies in User microservice
+        working-directory: ./user
         run: |
-          zip -r deploy.zip . -x '*.git'
+          npm install
 
-      - name: Deploy on Elastic beanstalk Production Env
+      - name: Generate deployment package for User microservice
+        working-directory: ./user
+        run: |
+          zip -r user.zip .
+
+      - name: Deploy User microservice on Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v20
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: CTSE_DevOps
-          environment_name: CTSEDevOps-env
-          version_label: "Sample"
-          region: eu-north-1
-          deployment_package: deploy.zip
+          application_name: ctse-app
+          environment_name: user-env
+          version_label: "ver-${{ github.sha }}"
+          region: us-north-1
+          deployment_package: ./user/user.zip
 
     env:
       DEBUG: true
