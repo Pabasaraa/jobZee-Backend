@@ -11,6 +11,14 @@ import { isAuthenticated } from "../middlewares/auth.js";
 
 const router = express.Router();
 
+// Health check endpoint
+router.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Ok",
+  });
+});
+
 router.get("/getall", getAllJobs);
 router.post("/post", isAuthenticated, postJob);
 router.get("/getmyjobs", isAuthenticated, getMyJobs);

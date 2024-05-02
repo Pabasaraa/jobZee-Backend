@@ -4,11 +4,19 @@ import {
   getAllBlogs,
   postBlog,
   updateBlog,
-  getSingleBlog
+  getSingleBlog,
 } from "../controllers/blogController.js";
 import { isAuthenticated } from "../middlewares/auth.js";
 
 const router = express.Router();
+
+router.get(
+  "/health",
+  res.status(200).json({
+    success: true,
+    blogs,
+  })
+);
 
 router.get("/getall", getAllBlogs);
 router.post("/post", isAuthenticated, postBlog);
