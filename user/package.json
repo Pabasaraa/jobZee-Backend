@@ -2,12 +2,12 @@
   "name": "user-microservice",
   "version": "1.0.0",
   "description": "create microservices about user details",
-  "main": "server.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "nodemon server.js",
     "dev": "node server.js",
-    "test":" jest"
+    "test": " jest"
   },
   "author": "chanuth",
   "license": "ISC",
