@@ -51,6 +51,7 @@ jobs:
           version_label: "ver-${{ github.sha }}"
           region: eu-north-1
           deployment_package: ./application/application.zip
+          wait_for_deployment: false
 
       # Blogs microservice
       - name: Create Env file for Blogs microservice
@@ -87,6 +88,7 @@ jobs:
           version_label: "ver-${{ github.sha }}"
           region: eu-north-1
           deployment_package: ./blog/blog.zip
+          wait_for_deployment: false
 
       # Jobs microservice
       - name: Create Env file for Jobs microservice
@@ -123,6 +125,7 @@ jobs:
           version_label: "ver-${{ github.sha }}"
           region: eu-north-1
           deployment_package: ./job/job.zip
+          wait_for_deployment: false
 
       # User microservice
       - name: Create Env file for User microservice
@@ -159,6 +162,7 @@ jobs:
           version_label: "ver-${{ github.sha }}"
           region: eu-north-1
           deployment_package: ./user/user.zip
+          wait_for_deployment: false
 
     env:
       DEBUG: true
