@@ -48,7 +48,7 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: ctse-app
           environment_name: application-env
-          version_label: "ver-${{ github.sha }}"
+          version_label: "ver-application.${{ github.sha }}"
           region: eu-north-1
           deployment_package: ./application/application.zip
           wait_for_deployment: false
@@ -85,7 +85,7 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: ctse-app
           environment_name: blog-env
-          version_label: "ver-${{ github.sha }}"
+          version_label: "ver-blog.${{ github.sha }}"
           region: eu-north-1
           deployment_package: ./blog/blog.zip
           wait_for_deployment: false
@@ -122,7 +122,7 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: ctse-app
           environment_name: job-env
-          version_label: "ver-${{ github.sha }}"
+          version_label: "ver-job.${{ github.sha }}"
           region: eu-north-1
           deployment_package: ./job/job.zip
           wait_for_deployment: false
@@ -159,7 +159,7 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: ctse-app
           environment_name: user-env
-          version_label: "ver-${{ github.sha }}"
+          version_label: "ver-user.${{ github.sha }}"
           region: eu-north-1
           deployment_package: ./user/user.zip
           wait_for_deployment: false
