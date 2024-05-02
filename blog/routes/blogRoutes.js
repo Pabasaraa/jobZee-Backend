@@ -10,13 +10,13 @@ import { isAuthenticated } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.get(
-  "/health",
+// Health check endpoint
+router.get("/health", (req, res) => {
   res.status(200).json({
     success: true,
-    blogs,
-  })
-);
+    message: "Ok",
+  });
+});
 
 router.get("/getall", getAllBlogs);
 router.post("/post", isAuthenticated, postBlog);
