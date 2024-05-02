@@ -82,7 +82,7 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: CTSE_DevOps
           environment_name: CTSEDevOps-env
-          version_label: "ver-${{ github.sha }}"
+          version_label: "Sample"
           region: eu-north-1
           deployment_package: deploy.zip
 
