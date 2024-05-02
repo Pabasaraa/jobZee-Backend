@@ -49,7 +49,7 @@ jobs:
           application_name: ctse-app
           environment_name: application-env
           version_label: "ver-${{ github.sha }}"
-          region: us-north-1
+          region: eu-north-1
           deployment_package: ./application/application.zip
 
       # Blogs microservice
@@ -85,7 +85,7 @@ jobs:
           application_name: ctse-app
           environment_name: blog-env
           version_label: "ver-${{ github.sha }}"
-          region: us-north-1
+          region: eu-north-1
           deployment_package: ./blog/blog.zip
 
       # Jobs microservice
@@ -121,7 +121,7 @@ jobs:
           application_name: ctse-app
           environment_name: job-env
           version_label: "ver-${{ github.sha }}"
-          region: us-north-1
+          region: eu-north-1
           deployment_package: ./job/job.zip
 
       # User microservice
@@ -157,7 +157,7 @@ jobs:
           application_name: ctse-app
           environment_name: user-env
           version_label: "ver-${{ github.sha }}"
-          region: us-north-1
+          region: eu-north-1
           deployment_package: ./user/user.zip
 
     env:
